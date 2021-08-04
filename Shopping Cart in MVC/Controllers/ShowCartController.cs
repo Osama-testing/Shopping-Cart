@@ -19,15 +19,8 @@ namespace Shopping_Cart_in_MVC.Controllers
             {
 
                 ViewBag.cartnumber = dt1.Rows.Count.ToString();
-               // DataTable table = dataSet.Tables["YourTableName"];
-
-                // Declare an object variable.
                 var result = dt1.AsEnumerable().Sum(x => Convert.ToInt32(x["Price"]));
-
                 ViewBag.AllPrices = result;
-                //int sum = Convert.ToInt32(dt1.Compute("SUM(price)", string.Empty));
-
-
             }
             else
             {
@@ -51,8 +44,7 @@ namespace Shopping_Cart_in_MVC.Controllers
                 {
                     dt.Rows[i].Delete();
                     dt.AcceptChanges();
-                    TempData["msg"] = "Selected Product Has Been Removed";
-                    //Label1.Text = "Item Has Been Deleted From Shopping Cart";
+                    //Product Removed
                     break;
 
                 }

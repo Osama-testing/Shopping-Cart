@@ -4,15 +4,33 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2 style="text-align: center;">Product List</h2>
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>
+<html>
+<body>
 
-<div align="right">
-    <img src="https://img.icons8.com/ios/30/4a90e2/shopping-cart.png" /> <b>(@ViewBag.cartnumber)</b>
 
-    <a href="@Url.Action("Index","ShowCart")" class="btn btn-mini btn-info icon-edit bigger-07">Show Cart </a>
-    <a href="@Url.Action("Clear","Product")" class="btn btn-danger">Clear Cart </a>
-</div>
-<table class="table table-striped" />
+    <div class="container">
+
+
+        <div id="divEmp">
+            <img src="https://img.icons8.com/ios/30/4a90e2/shopping-cart.png" /><b>(@ViewBag.cartnumber)</b>
+        </div>
+        <div>
+            <a href="@Url.Action("Index","ShowCart")" class="btn btn-mini btn-info icon-edit bigger-07">Show Cart </a>
+            <a href="@Url.Action("Clear","Product")" class="btn btn-danger">Clear Cart </a>
+        </div>
+    </div>
+    <br /><br />
+
+
+    <table class="table table-striped" />
     <tr>
         <th>
             #
@@ -28,12 +46,13 @@
         </th>
         <th>Operation</th>
     </tr>
+
     @if (Model != null)
     {
 
         foreach (var item in Model)
         {
-            using (Html.BeginForm("AddCart", "AddToCart", FormMethod.Post))
+            using (Ajax.BeginForm("AddCart", "AddToCart", new AjaxOptions() { UpdateTargetId = "divEmp", HttpMethod = "POST" }))
             {
                 <tr>
                     <td>
@@ -49,35 +68,36 @@
                     </td>
                     <td>
                         @*@Html.EditorFor(modelItem => item.Quantity )*@
-                        <input type="number" id="qty" name="qty" style="width: 40px;" value="0" />
-
+                        <input type="number" min="1" id="qty" name="qty" style="width: 40px;" value="0" />
 
                     </td>
                     <td>
 
-                        <input type="submit" value="Buy Now"  class="btn btn-mini btn-info icon-edit"/>
+                        <input type="submit" value="Buy Now" class="btn btn-mini btn-info icon-edit" />
                         @*@Html.ActionLink("Buy Now", "AddCart", "AddToCart", routeValues: new { productid = item.ProductID, qty =item.Quantity}, htmlAttributes: null)*@
 
                     </td>
                 </tr>
-                }
+
             }
         }
-        else
-        {
+    }
+    else
+    {
 
-< tr style = "text-align:center" >
-
-     < td ></ td >
-
-     < td ></ td >
-
-
-     < td >< b > No Data Found !!</ b ></ td >
-
-      </ tr >
-        }
-
-</ table >
+        <tr style="text-align:center"></tr>
+        <td></td>
+        <td></td>
+        <td style="color:orangered"><b> No Data Found !!</b></td>
+        <td></td>
+        <td></td>
+    }
 
 
+
+
+
+   
+
+</body>
+</html>

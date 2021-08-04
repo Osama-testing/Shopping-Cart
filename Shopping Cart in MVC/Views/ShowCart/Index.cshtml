@@ -22,6 +22,7 @@
             <th>S.No</th>
             <th>Product ID</th>
             <th>Product Name</th>
+            <th>Items Selected</th>
             <th>Price</th>
             <th>Operations</th>
         </tr>
@@ -29,34 +30,51 @@
         {
             foreach (DataRow row in Model.Rows)
             {
-    <tr>
-        <td>@row["sno"]</td>
-        <td>@row["productid"]</td>
-        <td>@row["productname"]</td>
-        <td>@row["price"]</td>
-        <td>
-            @Html.ActionLink("Remove this", "RemoveProduct", "ShowCart", routeValues: new { sno = @row["sno"] }, htmlAttributes: null)
-        </td>
+                <tr>
+                    <td>@row["sno"]</td>
+                    <td>@row["productid"]</td>
+                    <td>@row["productname"]</td>
+                    <td>@row["qty"]</td>
+                    <td>@row["price"]</td>
+                    <td>
+                        @Html.ActionLink("Remove this", "RemoveProduct", "ShowCart", routeValues: new { sno = @row["sno"]  }, htmlAttributes: null)
+                    </td>
 
-        
-    </tr>
+
+                </tr>
+
             }
+
+
         }
         else
         {
             <td><p style=" color:red;"><b>Cart is Empty Yet !!</b></p></td>
         }
-    </table>
-    @{
-        if (ViewBag.AllPrices != null)
-        {
-            <p style="float:right"><b>Total Price: @ViewBag.AllPrices</b></p>
-        }
-        else
-        {
-            <p style="float:right"><b>Total Price: 0</b></p>
+        @{
+            if (ViewBag.AllPrices != null)
+            {
+                <tfoot>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Total Price: @ViewBag.AllPrices</b></td>
+                </tfoot>
+            }
+            else
+            {
+                <tfoot>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Total Price: 0</b></td>
+                </tfoot>    
 
+            }
         }
-    }
+    </table>
+
 </body>
 </html>

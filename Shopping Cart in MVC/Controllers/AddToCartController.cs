@@ -1,37 +1,30 @@
-﻿using System;
+﻿using Shopping_Cart_in_MVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace Shopping_Cart_in_MVC.Controllers
 {
     public class AddToCartController : Controller
     {
-        // GET: AddToCart
-        int q = 5;
         public ActionResult AddCart(int productid,int qty)
         {
-            //qty = 2;
             ViewBag.productid = productid;
-
-            //if (this.Request.RequestType != "POST")
-            //{
-                DataTable dt = new DataTable();
-                DataRow dr;
+            DataTable dt = new DataTable();
+            DataRow dr;
             dt.Columns.Add("sno");
             dt.Columns.Add("productid");
             dt.Columns.Add("productname");
             dt.Columns.Add("price");
+            dt.Columns.Add("qty");
 
-
-            //if (Request.QueryString["productid"] != null)
-            //{
             if (Session["Buyitems"] == null)
                     {
-
                         dr = dt.NewRow();
                         String mycon = "Data Source=172.16.14.150;Initial Catalog=Osama_Testing;Persist Security Info=True;User ID=qaserver;Password=apple123!@#";
                         SqlConnection scon = new SqlConnection(mycon);
@@ -48,19 +41,20 @@ namespace Shopping_Cart_in_MVC.Controllers
                         dr["ProductName"] = ds.Tables[0].Rows[0]["ProductName"].ToString();
                         int i2 = Convert.ToInt32(ds.Tables[0].Rows[0]["Price"]);
                         int SumOfPrice = i2 * qty;
-                         dr["Price"] = SumOfPrice;
-                       // Decimal TotalPrice = Convert.ToDecimal(dt.Compute("SUM(dr[3])", string.Empty));
-
-                        dt.Rows.Add(dr);                    
+                        dr["Price"] = SumOfPrice;
+                        dr["qty"] = qty;
+                         dt.Rows.Add(dr);                    
                         Session["buyitems"] = dt;
-                    }
-                    else
+                        ViewBag.cartnumber = dt.Rows.Count.ToString();
+                
+
+            }
+            else
                     {
 
                         dt = (DataTable)Session["buyitems"];
                         int sr;
                         sr = dt.Rows.Count;
-
                         dr = dt.NewRow();
                         String mycon = "Data Source=172.16.14.150;Initial Catalog=Osama_Testing;Persist Security Info=True;User ID=qaserver;Password=apple123!@#";
                         SqlConnection scon = new SqlConnection(mycon);
@@ -75,30 +69,18 @@ namespace Shopping_Cart_in_MVC.Controllers
                         dr["sno"] = sr + 1;
                         dr["ProductID"] = ds.Tables[0].Rows[0]["ProductID"].ToString();
                         dr["ProductName"] = ds.Tables[0].Rows[0]["ProductName"].ToString();
-                         int i2 = Convert.ToInt32(ds.Tables[0].Rows[0]["Price"]);
-                          int SumOfPrice = i2 * qty;
+                        int i2 = Convert.ToInt32(ds.Tables[0].Rows[0]["Price"]);
+                         int SumOfPrice = i2 * qty;
+                        dr["Price"] = SumOfPrice;
+                       dr["qty"] = qty;
 
-
-
-
-
-                dr["Price"] = SumOfPrice;
-                dt.Rows.Add(dr);
-                        
+                         dt.Rows.Add(dr);                       
                         Session["buyitems"] = dt;
 
+
                     }
-            //}
-            //else
-            //{
-            //    dt = (DataTable)Session["buyitems"];
+            return Content("<img src='https://img.icons8.com/ios/30/4a90e2/shopping-cart.png' /> <b>(" + dt.Rows.Count.ToString()+ ")</b>");
 
-
-
-            //}
-            //}
-
-            return RedirectToAction("Index", "Product");
         }
 
       
